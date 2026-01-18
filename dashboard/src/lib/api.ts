@@ -6,7 +6,7 @@ async function fetchData() {
     try {
         // Timeout after 2 seconds to prevent infinite loading
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
 
         const res = await fetch(N8N_URL, { signal: controller.signal });
         clearTimeout(timeoutId);
@@ -194,12 +194,18 @@ export const api = {
 
             // Calculate distribution from the recentActivity (Mock Data Fallback)
             pipeline.recentActivity.forEach((item: any) => {
-                let p = (item.platform || 'unknown').toLowerCase();
-                // Simple normalization for mock data
-                if (p === 'x') p = 'twitter';
+                let rawPlatform = (item.platform || item.Platform?.select?.name || 'unknown').toLowerCase();
+                let platform = rawPlatform;
 
-                if (pipeline.platformDistribution[p] !== undefined) {
-                    pipeline.platformDistribution[p]++;
+                // Map common variations (Robust Fuzzy Matching)
+                if (rawPlatform.includes('twitter') || rawPlatform === 'x' || rawPlatform.includes('x (')) platform = 'twitter';
+                else if (rawPlatform.includes('linkedin') || rawPlatform.includes('linked')) platform = 'linkedin';
+                else if (rawPlatform.includes('instagram') || rawPlatform === 'ig') platform = 'instagram';
+                else if (rawPlatform.includes('tiktok')) platform = 'tiktok';
+                else if (rawPlatform.includes('youtube') || rawPlatform === 'yt') platform = 'youtube';
+
+                if (pipeline.platformDistribution[platform] !== undefined) {
+                    pipeline.platformDistribution[platform]++;
                 }
             });
         }
