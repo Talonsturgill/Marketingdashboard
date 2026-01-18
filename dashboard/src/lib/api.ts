@@ -13,8 +13,20 @@ async function fetchData() {
 
         if (!res.ok) throw new Error('Failed to fetch from n8n');
         const data = await res.json();
-        const payload = Array.isArray(data) ? data[0] : data;
-        return payload;
+
+        // Logic to determine if data is a wrapper or the list itself
+        // If data is an array and the first item looks like a content node (has id/platform), return the whole array
+        if (Array.isArray(data)) {
+            // Check if it's n8n wrapper [ { json: ... } ] or direct list [ { id: ... } ]
+            // If the first item has 'content' or 'events' property, it might be the wrapper we expected. 
+            // If not, assume it's the list of items.
+            if (data.length > 0 && (data[0].content || data[0].events)) {
+                return data[0];
+            }
+            return { content: data }; // Wrap it so getStats can find it in .content
+        }
+
+        return data;
     } catch (e) {
         console.warn("API fetch failed or timed out, using mock data", e);
         // RETURN MOCK DATA TO ENSURE UI LOADS
@@ -179,6 +191,17 @@ export const api = {
             pipeline.approved = rawContent.approved || 0;
             pipeline.published = rawContent.published || 0;
             pipeline.recentActivity = rawContent.recentActivity || [];
+
+            // Calculate distribution from the recentActivity (Mock Data Fallback)
+            pipeline.recentActivity.forEach((item: any) => {
+                let p = (item.platform || 'unknown').toLowerCase();
+                // Simple normalization for mock data
+                if (p === 'x') p = 'twitter';
+
+                if (pipeline.platformDistribution[p] !== undefined) {
+                    pipeline.platformDistribution[p]++;
+                }
+            });
         }
 
         // Sort Recent Activity
