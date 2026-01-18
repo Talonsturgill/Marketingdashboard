@@ -61,17 +61,21 @@ export default function Overview() {
                 </div>
 
                 <div className="md:col-span-1">
-                    <div className="mb-2 text-muted-foreground text-xs uppercase tracking-wider opacity-0">Status</div>
-                    <TerminalCard className="h-40 flex flex-col justify-center items-center gap-4">
-                        <div className="font-mono text-center">
-                            <pre className="text-accent-green text-[10px] leading-3 mb-2">
-                                {`
-      ██████████
-      OPERATIONAL
-      ────────────
-                                `}
-                            </pre>
-                            <span className="text-xs text-muted-foreground">2 events active</span>
+                    <div className="mb-2 text-muted-foreground text-xs uppercase tracking-wider">NEXT EVENT</div>
+                    <TerminalCard className="h-40 flex items-center justify-center">
+                        <div className="text-center space-y-2">
+                            <div className="text-6xl font-bold text-primary tabular-nums tracking-tighter text-glow">
+                                {safeStats.nextEventDays}
+                            </div>
+                            <div className="text-xs text-muted-foreground border-t border-dashed border-border pt-2 w-32 mx-auto">
+                                days_until_event
+                            </div>
+                            <div className={cn(
+                                "text-xs",
+                                safeStats.nextEventDays <= 7 ? "text-accent-yellow animate-pulse" : "text-accent-blue"
+                            )}>
+                                {safeStats.nextEventDays <= 7 ? "⚠ APPROACHING" : "► SCHEDULED"}
+                            </div>
                         </div>
                     </TerminalCard>
                 </div>

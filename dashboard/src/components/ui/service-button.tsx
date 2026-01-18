@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { cn } from "../../lib/utils";
+import { cn, triggerHaptic } from "../../lib/utils";
 import { motion } from "framer-motion";
 import type { HTMLMotionProps } from "framer-motion";
 
@@ -8,14 +8,18 @@ interface ServiceButtonProps extends HTMLMotionProps<"button"> {
     label?: string;
 }
 
-export function ServiceButton({ className, href, label = "Get Service", ...props }: ServiceButtonProps) {
+export function ServiceButton({ className, href, label = "Get Service", onClick, ...props }: ServiceButtonProps) {
     return (
         <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            onClick={(e) => {
+                triggerHaptic('light');
+                onClick?.(e);
+            }}
             className={cn(
                 "group relative inline-flex items-center gap-3 pl-4 pr-1.5 py-1.5 rounded-full",
-                "bg-surface-elevated border border-white/10",
+                "bg-surface-elevated border border-white/10 active-press",
                 "hover:border-white/20 hover:bg-surface-elevated/80 transition-all duration-300",
                 className
             )}

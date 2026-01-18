@@ -3,9 +3,10 @@
     "short_name": "Transform",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#FFFFFF",
-    "theme_color": "#FFFFFF",
+    "background_color": "#09090b",
+    "theme_color": "#09090b",
     "description": "Antigravity Marketing Dashboard",
+    "orientation": "portrait",
     "icons": [
         {
             "src": "icon.png",

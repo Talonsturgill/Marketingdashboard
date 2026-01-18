@@ -78,6 +78,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
+        <div className="crt-overlay" />
         <div className="min-h-screen relative">
           <CustomCursor />
           <Sidebar />
