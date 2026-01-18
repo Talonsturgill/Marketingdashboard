@@ -1,0 +1,17 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "node",
+        "AZURE_STORAGE_CONNECTION_STRING": "UseDevelopmentStorage=true",
+        "SLACK_WEBHOOK_URL": "",
+        "NOTION_API_KEY": "",
+        "NOTION_EVENTS_DB_ID": "d0ac98c0d6e947e587eacb6e17807861",
+        "NOTION_CONTENT_DB_ID": "1c7281f637cf806391b9cce8616e371b",
+        "N8N_WEBHOOK_URL": "https://transformlabs.app.n8n.cloud/webhook/dashboard-data"
+    },
+    "Host": {
+        "LocalHttpPort": 7071,
+        "CORS": "*"
+    }
+}
